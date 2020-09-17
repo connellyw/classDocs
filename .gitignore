@@ -1,3 +1,7 @@
+# rstudio
+.rstudio
+.Rhistory
+
 # Mac
 *.DS_Store
 
