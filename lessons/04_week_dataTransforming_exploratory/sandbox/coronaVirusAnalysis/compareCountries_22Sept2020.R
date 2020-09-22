@@ -1,12 +1,12 @@
-# Date: 17 Sept 2020
+# Date: 22 Sept 2020
 # What is this? Code to track the infections of COVID-19 for comparison between countries
 
 rm(list = ls()) # clear out the variables in memory
 
 
 # install the libraries if they are not already on your machine.
-install.packages("tidyverse")
-install.packages("plotly")
+#install.packages("tidyverse")
+#install.packages("plotly")
 
 library(tidyverse)
 library(plotly)
@@ -25,14 +25,14 @@ library(plotly)
 
 # If you have to search for the file, then use this code.
 # file.exists(dataFile)
-myFile <- file.choose()
-load(myFile)
+ myFile <- file.choose()
+ load(myFile)
 
 
-
+ 
 # What countries do I have data for analysis?
 unique(coronavirus$country)
-
+ 
 # What providences do I have data for analysis?
 unique(coronavirus$province)
 
@@ -48,7 +48,6 @@ view(coronavirus)
 # isolate all the case and date information to create smaller tables that we will use.
 
 # filter out a subset of the data. This data matches the specified country and the term "confirmed" for type. Then plot these filter results. X-axis is time, y-axis is confirmed c cases.
-
 
 
 #### #### #### #### #### #### 
@@ -96,14 +95,14 @@ ggplot(italyDat, aes(italyDate, italyCases)) +  geom_line(color = "red" ) + ylab
 
 
 #### #### #### #### #### #### 
-# Choose a Country!
+# Canada
 #### #### #### #### #### #### 
 
-# TODO 
+canadaDat <- coronavirus %>% filter(country == "Canada", type == "confirmed") %>% select(date,cases,type)
+#Note: we do not add a filter for the "province" column in the data. We do for other countries.
+names(canadaDat) <- c("canadaDate","canadaCases")
 
-#### individual plots ####
-
-
+ggplot(canadaDat, aes(x = canadaDate, y = canadaCases)) +  geom_line(color = "purple" ) + ylab("Canada Cumulative confirmed cases") 
 
 
 #### Compare countries ####
@@ -115,21 +114,22 @@ trace_0 <- c(swedenDat$swedenCases)
 trace_1 <- c(franceDat$franceCases)
 trace_2 <- c(usDat$usCases)
 trace_3 <- c(italyDat$italyCases)
-
+trace_4 <- c(canadaDat$canadaCases)
 
 # Establish the x-axis
 x <- c(1:length(trace_0)) # need an x-axis so we will use the dates, note all these traces should be the same length.
 
 # add the traces from each country to the main plot's data set
-#myData <- data.frame(x, trace_0, trace_1, trace_2, trace_3, trace_4)
-myData <- data.frame(x, trace_0, trace_1, trace_2, trace_3)
+myData <- data.frame(x, trace_0, trace_1, trace_2, trace_3, trace_4)
 
 
 # the code to create the plot from the individual traces
 p <- plot_ly(myData, x = ~x, y = ~trace_0, name = "Sweden", type = 'scatter', mode = 'markers') %>% 
   add_trace( x = ~x,y = ~trace_1, name = "France", type = 'scatter', mode = 'markers') %>% 
   add_trace( x = ~x, y = ~trace_2, name = "US", type = 'scatter', mode = 'markers') %>%
-  add_trace( x = ~x, y = ~trace_3, name = "Italy", type = 'scatter', mode = 'markers')
+  add_trace( x = ~x, y = ~trace_3, name = "Italy", type = 'scatter', mode = 'markers') %>%
+  add_trace( x = ~x, y = ~trace_4, name = "Canada", type = 'scatter', mode = 'markers')
 
 # show the plot
 p
+
