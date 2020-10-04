@@ -1,13 +1,15 @@
-# rstudio
-.rstudio
-.Rhistory
-
 # Mac
 *.DS_Store
+
+# sqlite
+*.sqlite_history
 
 # Dropbox
 *.dropbox/attr
 
+
+# Bash
+.bash_history
 # Compiled source #
 ###################
 *.class
